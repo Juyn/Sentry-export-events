@@ -2,6 +2,9 @@
 Fetch all events for a given issue
 You need to create an API KEY from Sentry before using this script
 Regex to extract user email from user Object: ({u'username': None, u'name': None, u'ip_address': u'[0-9.]+', u'email': None, u'data': None, u'id': u')([^\W][a-zA-Z0-9_\-.]+(\.[a-zA-Z0-9_\-.]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4})('})
+
+Install requests using "pip install requests"
+To run it, use the following command: ➜  ~ python  export.py -t [{TOKEN}] -i [{ISSUE_ID}] -f [{FILE_TO_EXPORT_TO}]
 """
 
 import requests
@@ -21,7 +24,7 @@ def download_data(issue,token, outfile):
                 try:
                     writer.writerow(event)
                 except:
-                    print event
+                    print (event)
                     exit(1)
             link = response.headers.get('Link')
             if link and '"next"' in link:
@@ -41,5 +44,5 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--issue', required=True)
     parser.add_argument('-f', '--file', required=False, default='out.csv')
     args = parser.parse_args()
-    print "download csv for {0}".format(args.issue)
+    print ("download csv for {0}".format(args.issue))
     download_data(args.issue, args.token, args.file)
